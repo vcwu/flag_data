@@ -90,19 +90,24 @@ namespace flag_data
 	bool start= true;
 	printf("Ready.");
 	printf("Press enter on start and stop of each run.");
-	printf("Type q and hit enter to quit.");
+	printf("Type q and hit enter to quit.\n");
+				
+	ros::WallTime tick;
 
 	do	{
 		getline(std::cin, input_str);
 		if(input_str.size() ==0)	{
-				if(start)	
-					printf("Start run.");
-				else
-					printf("Stop run.");
+				tick = ros::WallTime::now();
+				if(start)	{
+					printf("[]Start run.\n");
+				}
+				else	{
+					printf("Stop run.\n");
+				}
 				start = !start;
 		}
 		else	{
-			printf("Ignoring input.");
+			printf("Ignoring input.\n");
 		}
 	}
 	while(input_str[0] != 'q');	
