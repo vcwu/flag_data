@@ -31,26 +31,17 @@ namespace flag_data
 
 	//grab output txt file name
 	
+    ros::NodeHandle n_param ("~");
 	
-/*
-	if (!n_param.getParam ("output_txt_ticks", outputToFile))	{
-      outputToFile = false;
-      ROS_INFO ("\tNot outputting pose to file");
-	}
-	else	{
-	    if(outputToFile)	{
-			ROS_INFO ("Outputting Pose");
-			n_param.param ("pose_output_file", local_path, default_path_output);
-			sprintf (pose_output_filename_, "%s", local_path.c_str ());
-			ROS_INFO ("pose output Filename: %s", pose_output_filename_);
-			output.open(pose_output_filename_);
-		}
-		else	{
-      		ROS_INFO ("\tNot outputting pose to file");
-		
-		}
-	}
-*/
+	std::string default_path_output = "tick_output.txt";
+	std::string local_path;
+	
+
+	n_param.param ("tick_output_file", local_path, default_path_output);
+	sprintf (tick_output_filename_, "%s", local_path.c_str ());
+	ROS_INFO ("run tick output filename: %s", tick_output_filename_);
+
+
     // **** subscribe
 
 	/*
@@ -72,6 +63,7 @@ namespace flag_data
   Flagger::~Flagger (void)
   {
 	output.close();
+	ROS_INFO ("Wrote to file : %s", tick_output_filename_);
   }
   
 
@@ -81,8 +73,28 @@ namespace flag_data
 
 	//eventually need to WAIT for IMU to spin up
 	//maybe even camera to spin up
-	output.open("example.txt");
-	
+	if ( !boost::filesystem::exists( tick_output_filename_ ) )	{
+		boost::filesystem::path p(tick_output_filename_);
+		boost::filesystem::path dir = p.parent_path();
+		if(boost::filesystem::create_directories(dir))	{
+			ROS_INFO("Folder %s created.", dir.c_str());
+			ROS_INFO("File %s created.", p.stem().c_str());
+		}
+		else	{
+			ROS_ERROR("File cannot be opened.");	
+		}
+	}
+	else	{
+		ROS_INFO("File already exists.");
+	}
+
+	output.open(tick_output_filename_);
+	if(!output.good())	{
+		ROS_ERROR("File %s cannot be opened.", tick_output_filename_);
+	}
+	else	{
+		ROS_INFO("File %s opened.", tick_output_filename_);
+	}
   }
 
   void Flagger::spin()	{
@@ -101,10 +113,10 @@ namespace flag_data
 		if(input_str.size() ==0)	{
 				tick = ros::Time::now();
 				if(start)	{
-					sprintf(buffer,"[%d.%d]Start run #%d.", tick.sec, tick.nsec, runNum);
+					sprintf(buffer,"[%d.%d] Start run %d.", tick.sec, tick.nsec, runNum);
 				}
 				else	{
-					sprintf(buffer,"[%d.%d]Stop run. #%d.", tick.sec, tick.nsec, runNum);
+					sprintf(buffer,"[%d.%d] Stop run %d.", tick.sec, tick.nsec, runNum);
 					runNum++;
 				}
 				start = !start;

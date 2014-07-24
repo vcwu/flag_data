@@ -18,6 +18,8 @@
 #include <visualization_msgs/Marker.h>
 #include <resource_retriever/retriever.h>
 
+#include <boost/filesystem.hpp>
+
 
 #include <sensor_msgs/Image.h>
 
@@ -42,6 +44,9 @@ namespace flag_data
 	//writing to file the output
 	std::ofstream output;
 	std::string input_str;
+
+	
+    char tick_output_filename_[80];
 
     ros::NodeHandle n_;
 //    ros::Subscriber imu;
