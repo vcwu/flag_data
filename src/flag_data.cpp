@@ -63,7 +63,11 @@ namespace flag_data
   Flagger::~Flagger (void)
   {
 	output.close();
-	ROS_INFO ("Wrote to file : %s", tick_output_filename_);
+	//THIS IS BAD. THIS DOESN"T ACTUALLY EXECUTE D:
+	//nevermind. it does.. just that the ros_info doesn't display because by the time 
+	//this happens, we already call ros::shutdown()
+	printf("Wrote to file : %s", tick_output_filename_);
+	ROS_INFO ("HI IM CLOSING NOW !!!!!!", tick_output_filename_);
   }
   
 
@@ -103,6 +107,8 @@ namespace flag_data
 	printf("Ready.");
 	printf("Press enter on start and stop of each run.\n");
 	printf("Type q and hit enter to quit.\n");
+//	printf("Press enter to indica
+
 	
 	int runNum = 0;
 	char buffer[50];
@@ -133,7 +139,8 @@ namespace flag_data
 		}
 	}
 	while(input_str[0] != 'q');	
-	printf("Flagger::Finished.");
+	printf("Flagger::Finished.\n");
+	ros::shutdown();
   }
    
 } // end namespace ar_pose

@@ -1,0 +1,8 @@
+<launch>
+    <node name="flag_data" pkg="flag_data" type="flag_data_node" respawn="false"
+    output="screen">
+	<param name="tick_output_file" type="string"
+      value="$(find flag_data)/output/tick_output.txt"/>
+
+  </node>
+</launch>

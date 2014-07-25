@@ -1,0 +1,13 @@
+<launch>
+	<!-- User interaction node. Records timestamps of each run. -->
+	<node name="flag_data" pkg="flag_data" type="flag_data_node" respawn="false"
+    	output="screen" required="true">
+		<param name="tick_output_file" type="string"
+      	value="$(find flag_data)/output/tick_output.txt"/>
+  	</node>
+
+	<!-- If using phidgets imu...-->
+	<include file="$(find phidgets_imu)/launch/imu.launch" />
+
+	
+</launch>

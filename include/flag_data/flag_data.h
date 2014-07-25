@@ -19,7 +19,7 @@
 #include <resource_retriever/retriever.h>
 
 #include <boost/filesystem.hpp>
-
+#include <signal.h>	//custom action on sigint.. need to make sure certain things are done before exiting
 
 #include <sensor_msgs/Image.h>
 
