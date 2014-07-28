@@ -66,7 +66,7 @@ namespace flag_data
 	//THIS IS BAD. THIS DOESN"T ACTUALLY EXECUTE D:
 	//nevermind. it does.. just that the ros_info doesn't display because by the time 
 	//this happens, we already call ros::shutdown()
-	printf("Wrote to file : %s", tick_output_filename_);
+	printf("Wrote to file : %s\n", tick_output_filename_);
 	ROS_INFO ("HI IM CLOSING NOW !!!!!!", tick_output_filename_);
   }
   

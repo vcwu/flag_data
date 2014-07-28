@@ -1,13 +1,27 @@
 <launch>
-	<!-- User interaction node. Records timestamps of each run. -->
+	### User interaction node. Records timestamps of each run, as indicated by user keypress. 
 	<node name="flag_data" pkg="flag_data" type="flag_data_node" respawn="false"
     	output="screen" required="true">
 		<param name="tick_output_file" type="string"
       	value="$(find flag_data)/output/tick_output.txt"/>
   	</node>
 
-	<!-- If using phidgets imu...-->
-	<include file="$(find phidgets_imu)/launch/imu.launch" />
+	#### Phidgets IMU driver. No orientation 
+	<!-- If you want the filtered orientation/attitude estimate as well, include this instead -->
+	<!--	<include file="$(find phidgets_imu)/launch/imu.launch" /> -->
+
+	<node pkg="phidgets_imu" type="phidgets_imu_node" name="PhidgetsImuNode" 
+    	output="screen">
+
+    	# supported data rates: 4 8 16 24 32 40 ... 1000 (in ms)
+    	<param name="period" value="4"/>
+
+  	</node>
+  
+
+	### Recording IMU data - this is not dependent on what imu you use
+	<node pkg="rosbag"  type="record" name="rosbag_record_imu"
+		args="record -O $(find flag_data)/imu_output.bag /imu/data_raw" /> 
 
 	
 </launch>
