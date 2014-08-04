@@ -82,16 +82,11 @@ namespace flag_data
 		boost::filesystem::path dir = p.parent_path();
 		if(boost::filesystem::create_directories(dir))	{
 			ROS_INFO("Folder %s created.", dir.c_str());
-			ROS_INFO("File %s created.", p.stem().c_str());
 		}
 		else	{
-			ROS_ERROR("File cannot be opened.");	
+			ROS_ERROR("Folder %s already exists.", dir.c_str());	
 		}
 	}
-	else	{
-		ROS_INFO("File already exists.");
-	}
-
 	output.open(tick_output_filename_);
 	if(!output.good())	{
 		ROS_ERROR("File %s cannot be opened.", tick_output_filename_);
