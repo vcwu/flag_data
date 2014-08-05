@@ -24,10 +24,11 @@
 #include <sensor_msgs/Image.h>
 
 
+
 const std::string cameraImageTopic_ = "/camera/image_raw";
 const std::string cameraInfoTopic_  = "/camera/camera_info";
 
-const double AR_TO_ROS = 0.001;
+const int BUFFER_SIZE = 100;
 
 namespace flag_data 
 {
@@ -46,7 +47,7 @@ namespace flag_data
 	std::string input_str;
 
 	
-    char tick_output_filename_[80];
+    char tick_output_filename_[BUFFER_SIZE];
 
     ros::NodeHandle n_;
 //    ros::Subscriber imu;

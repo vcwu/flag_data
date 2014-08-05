@@ -5,6 +5,7 @@
 #include <flag_data/flag_data.h>
 #include <ros/console.h>
 
+
 int main (int argc, char **argv)
 {
   ros::init (argc, argv, "flag_data");
@@ -38,7 +39,7 @@ namespace flag_data
 	
 
 	n_param.param ("tick_output_file", local_path, default_path_output);
-	sprintf (tick_output_filename_, "%s", local_path.c_str ());
+	snprintf (tick_output_filename_,BUFFER_SIZE,  "%s", local_path.c_str ());
 	ROS_INFO ("run tick output filename: %s", tick_output_filename_);
 
 
@@ -106,7 +107,7 @@ namespace flag_data
 
 	
 	int runNum = 0;
-	char buffer[50];
+	char buffer[BUFFER_SIZE];
 	ros::Time tick;
 
 	do	{
@@ -114,10 +115,10 @@ namespace flag_data
 		if(input_str.size() ==0)	{
 				tick = ros::Time::now();
 				if(start)	{
-					sprintf(buffer,"[%d.%d] Start run %d.", tick.sec, tick.nsec, runNum);
+					snprintf(buffer,BUFFER_SIZE,"[%d.%d] Start run %d.", tick.sec, tick.nsec, runNum);
 				}
 				else	{
-					sprintf(buffer,"[%d.%d] Stop run %d.", tick.sec, tick.nsec, runNum);
+					snprintf(buffer,BUFFER_SIZE,"[%d.%d] Stop run %d.", tick.sec, tick.nsec, runNum);
 					runNum++;
 				}
 				start = !start;
