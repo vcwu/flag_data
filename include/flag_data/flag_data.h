@@ -22,7 +22,7 @@
 #include <signal.h>	//custom action on sigint.. need to make sure certain things are done before exiting
 
 #include <sensor_msgs/Image.h>
-
+#include <time.h>	//timestamping filename
 
 
 const std::string cameraImageTopic_ = "/camera/image_raw";
@@ -47,7 +47,8 @@ namespace flag_data
 	std::string input_str;
 
 	
-    char tick_output_filename_[BUFFER_SIZE];
+    char tick_output_filename_prefix_[BUFFER_SIZE];
+	std::string filename;	//with timestamp appended
 
     ros::NodeHandle n_;
 //    ros::Subscriber imu;

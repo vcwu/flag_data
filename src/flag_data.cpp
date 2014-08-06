@@ -38,9 +38,9 @@ namespace flag_data
 	std::string local_path;
 	
 
-	n_param.param ("tick_output_file", local_path, default_path_output);
-	snprintf (tick_output_filename_,BUFFER_SIZE,  "%s", local_path.c_str ());
-	ROS_INFO ("run tick output filename: %s", tick_output_filename_);
+	n_param.param ("tick_output_file_prefix", local_path, default_path_output);
+	snprintf (tick_output_filename_prefix_,BUFFER_SIZE,  "%s", local_path.c_str ());
+	ROS_INFO ("run tick output prefix: %s", tick_output_filename_prefix_);
 
 
     // **** subscribe
@@ -67,8 +67,7 @@ namespace flag_data
 	//THIS IS BAD. THIS DOESN"T ACTUALLY EXECUTE D:
 	//nevermind. it does.. just that the ros_info doesn't display because by the time 
 	//this happens, we already call ros::shutdown()
-	printf("Wrote to file : %s\n", tick_output_filename_);
-	ROS_INFO ("HI IM CLOSING NOW !!!!!!", tick_output_filename_);
+	printf("Wrote to file : %s\n", filename.c_str());
   }
   
 
@@ -78,8 +77,8 @@ namespace flag_data
 
 	//eventually need to WAIT for IMU to spin up
 	//maybe even camera to spin up
-	if ( !boost::filesystem::exists( tick_output_filename_ ) )	{
-		boost::filesystem::path p(tick_output_filename_);
+	if ( !boost::filesystem::exists( tick_output_filename_prefix_ ) )	{
+		boost::filesystem::path p(tick_output_filename_prefix_);
 		boost::filesystem::path dir = p.parent_path();
 		if(boost::filesystem::create_directories(dir))	{
 			ROS_INFO("Folder %s created.", dir.c_str());
@@ -88,12 +87,26 @@ namespace flag_data
 			ROS_ERROR("Folder %s already exists.", dir.c_str());	
 		}
 	}
-	output.open(tick_output_filename_);
+
+	//timetstamp the filename
+	time_t rawtime; 
+	struct tm* timeinfo;
+	time(&rawtime);
+	timeinfo = localtime (&rawtime);
+	char buffer[50];
+	strftime (buffer,80,"-%F-%H-%M-%S.txt",timeinfo);
+	std::string timestamp(buffer);
+	filename = tick_output_filename_prefix_;
+	filename.append(timestamp);	
+	output.open(filename.c_str());
+	output << "#Recording start/stop times of each manuever. \n#[time in seconds since epoch] start run num\n" << std::endl;
+
+
 	if(!output.good())	{
-		ROS_ERROR("File %s cannot be opened.", tick_output_filename_);
+		ROS_ERROR("File %s cannot be opened.", filename.c_str());
 	}
 	else	{
-		ROS_INFO("File %s opened.", tick_output_filename_);
+		ROS_INFO("File %s opened.", filename.c_str());
 	}
   }
 

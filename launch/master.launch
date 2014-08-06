@@ -2,8 +2,8 @@
 	### User interaction node. Records timestamps of each run, as indicated by user keypress. 
 	<node name="flag_data" pkg="flag_data" type="flag_data_node" respawn="false"
     	output="screen" required="true">
-		<param name="tick_output_file" type="string"
-      	value="$(find flag_data)/output/tick_output.txt"/>
+		<param name="tick_output_file_prefix" type="string"
+      	value="$(find flag_data)/output/tick_output"/>
   	</node>
 
 	#### Phidgets IMU driver. No orientation 
@@ -42,7 +42,7 @@
 		args="record -o $(find flag_data)/output/imu_output /imu/data_raw" /> 
 -->
 	<node pkg="rosbag"  type="record" name="rosbag_record_cam"
-		args="record -o $(find flag_data)/output/camera_output /camera/image_raw" /> 
+		args="record -o $(find flag_data)/output/camera_output /camera/image_raw /camera/camera_info" /> 
 
 	
 </launch>
