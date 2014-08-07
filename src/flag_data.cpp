@@ -146,6 +146,7 @@ namespace flag_data
 				printf("Ignoring input.\n");
 			}
 		}
+		ros::spinOnce();
 	}
 	while(input_str[0] != 'q');	
 	printf("Flagger::Finished.\n");
