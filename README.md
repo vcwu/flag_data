@@ -6,9 +6,10 @@ timestamps using keyboard input to make syncing data easier.
 
 More information on the project can be found [here] (https://sites.google.com/site/umdminirobotreu2014wu/).
 
-To run the main program + IMU collection  - 
+To run the main program + IMU collection:
+```
   roslaunch flag_data master.launch 
-
+```
 
 
 Note on Marker Size
